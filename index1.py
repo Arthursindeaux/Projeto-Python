@@ -3,7 +3,6 @@ import os
 arquivo = "Banco de Dados.txt"
 
 #Função para adicionar um novo treino
-
 def novoTreino():
         data = input("Em que dia foi feito seu treino: dia/mês/ano ")
         tipoTreino = input("O que você treinou ? (AMARAP/EMOM/FOR TIME) ")
@@ -16,7 +15,6 @@ def novoTreino():
             print("O seu treino foi adicionado ! ")
 
 #Função para visualizar um treino
-
 def listarTreino():
      with open(arquivo, "r", encoding="utf8") as dados:
           conteudo = dados.readlines()
@@ -27,8 +25,7 @@ def listarTreino():
                for i,linhas in enumerate(conteudo):
                 print(f"{i} - {linhas.strip()}")
                
-#Função para editar treino,Porém não estou conseguindo enumera-las do jeito certo.
-
+#Função para editar treino,mas ela esta dando erro,no terminal não to conseguindo fazer com que elas apareçam enumeradas.
 def editarTreino():
     listarTreino()
     substituicao = int(input("Qual treino você quer editar ?"))
@@ -47,9 +44,7 @@ def editarTreino():
          print("O seu treino foi atualizado! ")
     else:
         print("Indice inválido")
-
-#Função para excluir o treino
-
+           
 while True:
 
     print("-------------------------------- ")
@@ -72,8 +67,6 @@ while True:
     if escolha == 3:
          editarTreino()
 
-    if escolha ==4:
-        excluirTreino()
 
 
 

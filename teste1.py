@@ -1,6 +1,7 @@
 import os
 
 arquivo = "Banco de Dados.txt"
+desempenhoTxt = "Metas.txt"
 
 # Função para adicionar treinos
 
@@ -26,17 +27,21 @@ def novoTreino():
 def listarTreino():
     with open(arquivo, "r", encoding="utf8") as dados:
         conteudo = dados.readlines()
+
         if conteudo == "":
             print("Você ainda não tem nenhum treino registrado.")
         else:
             print("Aqui estão os treinos que você tem registrado:")
+
             for linha in conteudo:
                 print(linha.strip())
 
 # Função para editar treino
 def editarTreino():
     listarTreino()
+
     substituicao = int(input("Qual treino você quer editar? "))
+
     with open(arquivo, "r", encoding="utf8") as dados:
         treinos = dados.readlines()
     
@@ -49,6 +54,7 @@ def editarTreino():
 
         with open(arquivo, "w", encoding="utf8") as dados:
             dados.writelines(treinos)
+
         print("O seu treino foi atualizado!")
     else:
         print("Índice inválido.")
@@ -56,7 +62,9 @@ def editarTreino():
 # Função para excluir treino
 def excluirTreino():
     listarTreino()
+
     numeroTreino = int(input("Qual treino você quer excluir? "))
+
     with open(arquivo, "r", encoding="utf8") as dados:
         treinos = dados.readlines()
 
@@ -66,11 +74,73 @@ def excluirTreino():
 
         with open(arquivo, "w", encoding="utf8") as dados:
             dados.writelines(treinos)
+
         print("Treino excluído com sucesso!")
     else:
         print("Índice inválido.")
 
-# Menu principal
+#Função para filtrar treinos
+def filtraTreino():
+
+    modo = input("Você quer filtrar por tipo do treino (exm:EMOM) ou por movimento (exm:snatch) ? ")
+
+    with open(arquivo, "r",encoding="utf8") as dados:
+        treinos =dados.readlines()
+    
+    treinosEncontrados = [linha for linha in treinos if modo.lower() in linha.lower()]
+
+    if treinosEncontrados:
+        print(f"treinos encontrados {modo} ")
+        for treinos in treinosEncontrados:
+            print(treinos.strip())
+    else:
+        print(f"Nenhum treino foi encontrado por {modo}")
+
+#Adicionar metas
+def adicionarMeta():
+    metas = input("Anote uma meta de desempenho que você queira alcançar: ")
+
+    with open(desempenhoTxt,"a",encoding="utf8") as metaFutura:
+        metaFutura.write(metas + "; pendente")
+
+    print("Parabéns, sua meta foi adicionada no sistema")
+
+#Visualização das metas
+def visualizarMeta():
+    with open(desempenhoTxt, "r", encoding="utf8") as metaFutura:
+        conteudo = metaFutura.readlines()
+
+    if not conteudo:
+        print("Nenhuma meta de desempenho foi registrada.")
+        return
+
+    print("Suas metas de desempenho:")
+    for i, linha in enumerate(conteudo):
+        try:
+            objetivo, status = linha.strip().split(";")
+            print(f"{i} - {objetivo.strip()} ({status.strip()})")
+        except ValueError:
+            print(f"{i} - [Formato inválido]: {linha.strip()}")
+
+def metaConcluida():
+    visualizarMeta()
+    indice = int(input("Digite o índice da meta que você concluiu: "))
+
+    with open(desempenhoTxt, "r", encoding="utf8") as metaFutura:
+        meta = metaFutura.readlines()
+
+    if 0 <= indice < len(meta):
+        metas, _ = meta[indice].strip().split(";")
+        meta[indice] = f"{metas}; Concluída\n"
+
+        with open(desempenhoTxt, "w", encoding="utf8") as metaFutura:
+            metaFutura.writelines(meta)
+
+        print("Parabéns! Meta marcada como concluída.")
+    else:
+        print("Índice inválido.")
+
+# visão usuário
 while True:
     print("-------------------------------- ")
     print("---------- WOD TRACKER ---------")
@@ -81,6 +151,10 @@ while True:
     print("Digite 2, caso queira visualizar.")
     print("Digite 3, caso queira editar.")
     print("Digite 4, caso queira excluir.")
+    print("Digite 5, caso queira filtrar por tipo ou movimento. ")
+    print("Digite 6, caso queira adicionar metas de desempenho para o futuro. ")
+    print("Digite 7, caso queira visualizar sua metas de desempenho ")
+    print("Digite 8, caso queira marcar como concluída alguma meta")
     escolha = int(input())
 
     if escolha == 1:
@@ -91,5 +165,13 @@ while True:
         editarTreino()
     elif escolha == 4:
         excluirTreino()
+    elif escolha == 5:
+        filtraTreino()
+    elif escolha == 6:
+        adicionarMeta()
+    elif escolha == 7:
+        visualizarMeta()
+    elif escolha == 8:
+        metaConcluida()
     else:
         print("Opção inválida.")
