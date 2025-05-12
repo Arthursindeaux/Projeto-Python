@@ -122,6 +122,7 @@ def visualizarMeta():
         except ValueError:
             print(f"{i} - [Formato inválido]: {linha.strip()}")
 
+#Função para concluir a meta
 def metaConcluida():
     visualizarMeta()
     indice = int(input("Digite o índice da meta que você concluiu: "))
@@ -140,6 +141,23 @@ def metaConcluida():
     else:
         print("Índice inválido.")
 
+#Escolha de treino aleatoriamente 
+def escolhaTreino():
+    with open(arquivo, "r",encoding="utf8") as dados:
+        treinos = dados.readlines()
+
+        if not treinos:
+            print("Nenhum treino registrado ainda. ")
+            return
+        
+        ultimoTreino = treinos[-1]
+
+        posicao = len(ultimoTreino) % len(treinos)
+
+        tipoTreino = treinos[posicao].split(";")[1].strip()
+
+        print("Treino sugerido para hoje: ", tipoTreino)
+
 # visão usuário
 while True:
     print("-------------------------------- ")
@@ -155,6 +173,7 @@ while True:
     print("Digite 6, caso queira adicionar metas de desempenho para o futuro. ")
     print("Digite 7, caso queira visualizar sua metas de desempenho ")
     print("Digite 8, caso queira marcar como concluída alguma meta")
+    print("Digite 9, caso queira que selecionar um treino aleatório")
     escolha = int(input())
 
     if escolha == 1:
@@ -173,5 +192,7 @@ while True:
         visualizarMeta()
     elif escolha == 8:
         metaConcluida()
+    elif escolha == 9:
+        escolhaTreino()
     else:
         print("Opção inválida.")
