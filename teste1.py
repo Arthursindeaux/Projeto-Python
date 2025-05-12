@@ -1,4 +1,5 @@
 import os
+import random
 
 arquivo = "Banco de Dados.txt"
 desempenhoTxt = "Metas.txt"
@@ -24,6 +25,7 @@ def novoTreino():
     print("O seu treino foi adicionado!")
 
 # Função para visualizar treinos
+
 def listarTreino():
     with open(arquivo, "r", encoding="utf8") as dados:
         conteudo = dados.readlines()
@@ -37,6 +39,7 @@ def listarTreino():
                 print(linha.strip())
 
 # Função para editar treino
+
 def editarTreino():
     listarTreino()
 
@@ -60,6 +63,7 @@ def editarTreino():
         print("Índice inválido.")
 
 # Função para excluir treino
+
 def excluirTreino():
     listarTreino()
 
@@ -80,6 +84,7 @@ def excluirTreino():
         print("Índice inválido.")
 
 #Função para filtrar treinos
+
 def filtraTreino():
 
     modo = input("Você quer filtrar por tipo do treino (exm:EMOM) ou por movimento (exm:snatch) ? ")
@@ -97,6 +102,7 @@ def filtraTreino():
         print(f"Nenhum treino foi encontrado por {modo}")
 
 #Adicionar metas
+
 def adicionarMeta():
     metas = input("Anote uma meta de desempenho que você queira alcançar: ")
 
@@ -106,6 +112,7 @@ def adicionarMeta():
     print("Parabéns, sua meta foi adicionada no sistema")
 
 #Visualização das metas
+
 def visualizarMeta():
     with open(desempenhoTxt, "r", encoding="utf8") as metaFutura:
         conteudo = metaFutura.readlines()
@@ -143,20 +150,17 @@ def metaConcluida():
 
 #Escolha de treino aleatoriamente 
 def escolhaTreino():
-    with open(arquivo, "r",encoding="utf8") as dados:
+    with open(arquivo, "r", encoding="utf8") as dados:
         treinos = dados.readlines()
-
-        if not treinos:
-            print("Nenhum treino registrado ainda. ")
-            return
-        
-        ultimoTreino = treinos[-1]
-
-        posicao = len(ultimoTreino) % len(treinos)
-
-        tipoTreino = treinos[posicao].split(";")[1].strip()
-
-        print("Treino sugerido para hoje: ", tipoTreino)
+    
+    if not treinos:
+        print("Nenhum treino registrado ainda.")
+        return
+    
+    treino_aleatorio = random.choice(treinos)
+    tipo_treino = treino_aleatorio.split(";")[1].strip()
+    
+    print("\nTreino sugerido para hoje:", tipo_treino)
 
 # visão usuário
 while True:
@@ -174,6 +178,7 @@ while True:
     print("Digite 7, caso queira visualizar sua metas de desempenho ")
     print("Digite 8, caso queira marcar como concluída alguma meta")
     print("Digite 9, caso queira que selecionar um treino aleatório")
+    print("Digite 10, caso queira sair do programa")
     escolha = int(input())
 
     if escolha == 1:
@@ -194,5 +199,7 @@ while True:
         metaConcluida()
     elif escolha == 9:
         escolhaTreino()
+    elif escolha == 10:
+        break
     else:
         print("Opção inválida.")
