@@ -1,5 +1,7 @@
 import os
 import random
+import matplotlib.pyplot as plt
+from collections import Counter
 
 arquivo = "Banco de Dados.txt"
 desempenhoTxt = "Metas.txt"
@@ -15,7 +17,7 @@ def novoTreino():
     if os.path.exists(arquivo):
         with open(arquivo, "r", encoding="utf8") as dados:
             linhasExistentes = dados.readlines()
-            numero = len(linhasExistentes)
+            numero = len(linhasExistentes)    
     else:
         numero = 0
 
@@ -162,6 +164,33 @@ def escolhaTreino():
     
     print("\nTreino sugerido para hoje:", tipo_treino)
 
+def graficoTreinos():
+    if not os.path.exists(arquivo):
+        print("Nenhum treino encontrado.")
+        return
+
+    with open(arquivo, "r", encoding="utf8") as dados:
+        linhas = dados.readlines()
+
+    tipos = [linha.split(";")[1].strip().upper() for linha in linhas if ";" in linha]
+
+    if not tipos:
+        print("Não há tipos de treino registrados para gerar o gráfico.")
+        return
+
+    contagem = Counter(tipos)
+    tiposUnicos = list(contagem.keys())
+    quantidade = list(contagem.values())
+
+    plt.figure(figsize=(8, 5))
+    plt.bar(tiposUnicos, quantidade, color='skyblue')
+    plt.title("Quantidade de Treinos por Tipo")
+    plt.xlabel("Tipo de Treino")
+    plt.ylabel("Quantidade")
+    plt.grid(axis='y')
+    plt.tight_layout()
+    plt.show()
+
 # visão usuário
 while True:
     print("-------------------------------- ")
@@ -178,7 +207,8 @@ while True:
     print("Digite 7, caso queira visualizar sua metas de desempenho ")
     print("Digite 8, caso queira marcar como concluída alguma meta")
     print("Digite 9, caso queira que selecionar um treino aleatório")
-    print("Digite 10, caso queira sair do programa")
+    print("Digite 10, caso queira ver o gráfico dos seus ultimos treinos")
+    print("Digite 11, caso queira sair do programa")
     escolha = int(input())
 
     if escolha == 1:
@@ -200,6 +230,8 @@ while True:
     elif escolha == 9:
         escolhaTreino()
     elif escolha == 10:
+        graficoTreinos()
+    elif escolha == 11:
         break
     else:
         print("Opção inválida.")
